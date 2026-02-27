@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
 
+echo "" # Print string
 if [[ ${NO_RPROMPT:-0} -ne 1 ]]; then
-    echo "" # Print string
     elapsed-time-execution-command # Call command
     RPROMPT="%F{#36a3d9}%K{#030d11} 󰔚 ${elapsed_time_execution:-} %K{reset}%F{reset}" # Set right-prompt style
 fi
