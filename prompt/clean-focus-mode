@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Reference https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Prompt-Expansion
+local DIR="%1~"
+local JOB="%(1j.job=%j .)"
+local ERRCODE="%(?.. err=%? )"
+export PROMPT_ZSH="${JOB}${ERRCODE}${DIR}
+%#"
