@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+must_have_argument ${1:-} # Must have argument-1 passed || exit 
+
+local answer=$(sgpt "${1}")
+local translated_answer_jp=$(translate-language "${answer}")
+local translated_answer_id=$(translate-language "${answer}" en id)
+speak-jp "${translated_answer_jp}" &
+echo "${answer}\n"
+echo "${translated_answer_id}"
+wait

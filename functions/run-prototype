@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed ctypes.sh # Check if command is installed
+
+local directory_of_prototype="/etc/zsh/prototype/"
+LD_LIBRARY_PATH=/usr/local/lib bash "${directory_of_prototype}${1:-}/exec"
+
+# dlopen: usage: dlopen [-N|-l] [-t] [-d] [-g] [-n] library [flags|...]
+# dlcall: usage: dlcall [-n name] [-a abi] [-r type] [-h handle] symbol [parameters...]
+# -- https://github.com/taviso/ctypes.sh/wiki

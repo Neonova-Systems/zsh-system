@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+
+[[ -n "${1:-}" ]] || { send_return EINVAL || return $?; } # Check if argument is not empty string || Exit with error exit-code

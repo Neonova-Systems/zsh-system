@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+# foot -D "$HOME" --window-size-pixels=$(select-region-on-screen "%wx%h") # Check if command available && select region and spawn terminal with region size
+foot --window-size-pixels=$(select-region-on-screen "%wx%h")

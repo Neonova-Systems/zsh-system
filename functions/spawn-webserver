@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+autoload need-normal-user
+
+need-normal-user # Require normal user to run
+pkill -f 'python .*http.server' || python -m http.server # Toggle http server

@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+alias make1MB="truncate --size=1m ./1MB.dat" # Create a file with size 1mb (all zeros)
+alias make5MB="truncate --size=5m ./5MB.dat" # Create a file with size 5mb (all zeros)
+alias make10MB="truncate --size=10m ./10MB.dat" # Create a file with size 10mb (all zeros)

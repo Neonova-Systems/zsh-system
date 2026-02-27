@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed hyprctl jq # Need install this in order to run
+
+[[ $(hyprctl getoption misc:cursor_zoom_factor -j | jq '.float') -eq 1 ]] && hyprctl keyword misc:cursor_zoom_factor ${1:-1.5} || hyprctl keyword misc:cursor_zoom_factor 1.0

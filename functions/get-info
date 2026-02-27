@@ -1,0 +1,88 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed tlp-stat ip iwconfig curl last w lsusb sensors stat usb-devices who nc # Check if command is installed : exit
+local function;for function in /etc/zsh/functions/optionals/get-info-modules/*(.) spectre_fzf; do # Create for-loop with list of functions of modules that will used in this functions
+    autoload ${function} # Load the functions that will be used
+done # End for-loop statement
+
+local -a available_options=( # Declare local array
+    "public-ip"                 # Get public ip address of this machine
+    "local-ip"                  # Get local ip address of this machine
+    "disk"                      # Get information about disk
+    "logged-user"               # Get information about current log-in user
+    "all-user"                  # List all user in this system
+    "battery"                   # Get information about battery
+    "usb"                       # Get information about usb devices
+    "speed-network"             # Get information about speed network -> upload, download
+    "permission"                # Get information about permission on specific directory or in this directory
+    "port"                      # Get information about port network in this system
+    "top-memory"                # Get information memory usage in this system
+    "metadata"                  # Get information file metadata
+    "hyprland-keybinding"       # Get keybinding of hyprland window-manager
+    "top-history"               # Get command that you used often in shell
+    "cpu-temperature"           # Get cpu temperature this machine
+    "interface-mode"            # Get wireless device interface status mode
+) 
+# NOTE: ${(o)list} <- Sort the resulting words in ascending order; if this appears on its own the sorting is lexical and case-sensitive (unless the locale renders it case-insensitive).
+local option="${1:-$(print -l ${(o)available_options} | spectre_fzf 'Choose an option')}" # Declare local variable if argument-1 empty then pick option with fzf
+case ${option} in # Read option variable
+    "local-ip") 
+        get-info-local-ip
+        ;; 
+    "public-ip")
+        get-info-public-ip
+        ;;
+    "all-user") 
+        get-info-all-user
+        ;;
+    "logged-user") 
+        get-info-logged-user
+        ;;
+    "disk")
+        get-info-disk
+        ;;
+    "battery")
+        get-info-battery
+        ;;
+    "speed-network")
+        get-info-speed-network "${2:-upload}" # Argument available: upload | download
+        ;;
+    "port")
+        info_msg "All listening ports"                                                  # Show info message
+        ( lsof -i | grep LISTEN | tr -s ' ' ) || error_msg "No LISTENING ports open!"   # Show only LISTEN in 'lsof' command
+        info_msg "All UDP ports"                                                        # Show info message
+        ( lsof -nP | grep UDP | tr -s ' ' ) || error_msg "No UDP ports open!"           # Show only UDP in 'lsof' command
+        info_msg "All TCP ports"                                                        # Show info message
+        ( lsof -nP | grep TCP | tr -s ' ' ) || error_msg "No TCP ports open!"           # Show only TCP in 'lsof' command
+        ;;
+    "cpu-temperature")
+        echo "$(tlp-stat -t | grep CPU | tr -s " " | cut -d ' ' -f 4)°C"
+        ;;
+    "top-memory")
+        need_installed ps_mem ps # Check if command is installed || exit
+        ps --sort -pcpu -eo pid=,pcpu=,comm= | head -n ${2:-10} # Get top memory usage
+        ps_mem -p $(pgrep -d, -u $USER) | tail -n ${2:-10} # Get top core memory usage in user process
+        ;;
+    "permission")
+        info_msg "Permission in current directory"  # Show info message
+        stat --printf="%a %n \n" ${2:-./*}          # Show all permission in current directory or argument-2
+        ;;
+    "interface-mode")
+        iwconfig ${2:-wlan0} | grep --color=never Mode | tr -s " " | cut -d ' ' -f 2 # Show only interface mode in 'iwconfig' command
+        ;;
+    "usb")
+        info_msg "All the connected USB devices"    # Show info message
+        lsusb; lsusb --tree                         # List USB device
+        usb-devices                                 # Print USB device details
+        ;;
+    "metadata")
+        need_installed exiftool && man exiftool # Check if command is installed && open manual page for exiftool
+        ;;
+    "top-history")
+        get-info-top-history
+        ;;
+    "hyprland-keybinding")
+        grep -e "bind=" -e "submap=" ${2:-~/.config/hypr/hyprland.conf} | grep -v '^# ' | sed -e 's/bind=//' -e 's/submap=/\n/' -e 's/# /-- /' # Get keybinding from hyprland config
+        ;;
+    *) : ;;
+esac # End switch-case statement

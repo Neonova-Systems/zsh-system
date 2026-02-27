@@ -1,0 +1,41 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed hyprctl acpi # Need install this in order to run
+
+local WARNING_LEVEL=20 # Declare variable for storing warning level of battery percentage
+local blur_state=$(get-hyprland-option decoration:blur:enabled .int) # Get blur option value
+local shadow_state=$(get-hyprland-option decoration:drop_shadow .int) # Get shadow option value
+
+mkdir -p /tmp/$0 # Create temporary directory for this program
+local lock_file="/tmp/$0/lock-file" # Declare variable for storing the path of lock-file
+rm -f ${lock_file} || : # Remove the old lock-file
+
+_toggle_all() {
+    toggle-opacity
+    toggle-hyprland-value decoration blur enabled
+    toggle-hyprland-value decoration drop_shadow
+    toggle-animation
+}
+
+_check() {
+    if [[ ${battery_percentage} -gt $WARNING_LEVEL ]] && [[ -f "${lock_file}" ]]; then # Check if batter percentage greater of WARNING_LEVEL & lock-file exist then:
+        [[ ${blur_state} -eq 0 && ${shadow_state} -eq 0 ]] && _toggle_all # Call toggle functions
+        rm -f ${lock_file} || : # Remove the old lock-file
+    fi # End if-else statement
+}
+
+[[ -n "${1:-}" ]] && { # Check if argument-1 is not empty string 
+    local battery_percentage=$(acpi -b | /usr/bin/grep -P -o "[0-9]+(?=%)") # Get battery percentage and store it into variable
+    _check && return # call check event & exit
+} 
+while :; do # Create infinite-loop
+    sleep 20 # Delay interval of the loop
+    local battery_status=$(acpi -b | /usr/bin/grep -c "Discharging") # Get battery charge status
+    local battery_percentage=$(acpi -b | /usr/bin/grep -P -o "[0-9]+(?=%)") # Get battery percentage and store it into variable
+    if [[ ${battery_percentage} -le $WARNING_LEVEL ]] && [[ "${battery_status}" -eq 1 ]] && [[ ! -f "${lock_file}" ]]; then # Check if battery percentage below of WARNING_LEVEL & lock-file did not exist then:
+        dunstify --appname="$0" "$0" "Warning your battery low. Please charge your battery!" --urgency critical # Notification
+        [[ ${blur_state} -eq 1 && ${shadow_state} -eq 1 ]] && _toggle_all # Call toggle functions
+        _check # Call check functions
+        touch ${lock_file} # Create lock-file, so the above code for battery-saving did not run every loop
+    fi # End if-else statement
+done # End while-loop statement

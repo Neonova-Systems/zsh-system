@@ -1,0 +1,8 @@
+# vim:ft=sh
+#          ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+#          ┃ Executed every time the line editor is started to read a new line of input.  ┃
+#          ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail errreturn
+
+zle -K viins  # Initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+echo -ne '\e[5 q' # Change cursor shape to beam

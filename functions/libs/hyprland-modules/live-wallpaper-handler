@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed mpvpaper yad # Check if command is installed
+need_normal_user # Only normal user can run
+
+case ${1:---choose} in # Read argument-1 passed
+    noLoop|noloop)
+        mpvpaper -p -s -f --mpv-options "--no-audio" "${3:-eDP-1}" "${2}"
+        ;;
+    noLoopTop|nolooptop|noloop-top)
+        mpvpaper --layer overlay -p -s -f --mpv-options "--no-audio" "${3:-eDP-1}" "${2}"
+        ;;
+    Loop|loop)
+        killall -q mpvpaper || : # Kill old process of mpvpaper, if exist
+        mpvpaper -p -s -f --mpv-options "--no-audio --loop" "${3:-eDP-1}" "${2}"
+        ;;
+    --choose)
+        live-wallpaper-handler loop "$(yad --file --add-preview --large-preview --title='Choose LiveWallpaper' --file-filter='video | *.mp4 *.webm')"
+        ;;
+    *)
+        : # Do nothing
+        ;;
+esac # End switch-case statement

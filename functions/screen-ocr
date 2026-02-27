@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed tesseract # Check if command is installed || exit with error exit-code
+
+mkdir -p /tmp/$0 # Create cache folder
+autoload screenshot-area # Load functions
+local temporary_file=$(mktemp /tmp/$0/XXXXXXXXXX.png) # Create local variable for storing temporary_file name
+screenshot-area "$temporary_file" # Screenshot and output it into temporary_file
+tesseract -l ${1:-eng} "$temporary_file" stdout | wl-copy # Scan text in the image and copy into clipboard
+dunstify "$0" "Coppied to the clipboard" # Send notification

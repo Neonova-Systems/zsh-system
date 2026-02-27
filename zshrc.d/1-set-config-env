@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+export PARALLEL_HOME="$XDG_CONFIG_HOME/parallel"
+export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
+export MYSQL_HISTFILE="$XDG_DATA_HOME/mysql_history"
+export ANDROID_HOME="$XDG_DATA_HOME/android"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+export XCURSOR_PATH="/usr/share/icons:$XDG_DATA_HOME/icons"
+export ANDROID_USER_HOME="$XDG_DATA_HOME"/android 
+export WINEPREFIX="$XDG_DATA_HOME/wine"
+export W3M_DIR="$XDG_DATA_HOME/w3m"
+export PNPM_HOME="$XDG_DATA_HOME/pnpm"
+export SAVEHIST=8500                                                            # Set the maximum number of history events to save in the history file.
+export HISTSIZE=8500                                                            # Set the maximum number of commands that are stored in memory in a history events while the shell session is on going.
+export HISTFILE="$XDG_STATE_HOME/zsh/history"                                   # Set directory where is histfile is saved
+export TERMINAL="foot"                                                          # Set default terminal
+export TERM="xterm-256color"                                                    # Set terminal capabilities
+export EDITOR="nvim"                                                            # Set default text-editor
+# export BROWSER="firefox"                                                        # Set default browser 
+export PROMPT_EOL_MARK=""                                                       # Set PROMPT_EOL_MARK to blank
+export MANPAGER="nvim +Man!"                                                    # Set better manpager
+# export MANWIDTH=999                                                             # If $MANWIDTH is set, its value is used as the line length for which manual pages should be formatted.
+# export SSH_ASKPASS="/usr/lib/ssh/ssh-askpass"                                   # Set default askpass program for ssh
+# export SUDO_ASKPASS="/usr/lib/ssh/x11-ssh-askpass"                              # Set default askpass program for sudo with -A flag
+export TERMINAL_WIDTH="$(tput cols)"                                            # Store terminal width size
+export FPATH="$FPATH:${$(find $XDG_CONFIG_HOME/zsh/functions -type d -printf %p: 2>/dev/null)%%:}:${$(find /etc/zsh/functions -type d,l -printf %p:)%%:}"    # Add additional functions autoload path
+export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.local/share/cargo/bin:$HOME/.bin:$GOPATH/bin:$HOME/.local/share/npm/bin:$PNPM_HOME" # Add additional executable path

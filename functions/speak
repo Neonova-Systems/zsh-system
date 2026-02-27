@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+#  ╭──────────────────────────────────────────────────────────────────────────────╮
+#  │                              espeak-ng options:                              │
+#  ╰──────────────────────────────────────────────────────────────────────────────╯
+#  ▲
+#  █   -a <integer>                                                               
+#  █       Amplitude, 0 to 200, default is 100                                    
+#  █   -g <integer>                                                               
+#  █       Word gap. Pause between words, units of 10mS at the default speed      
+#  █   -v <voice name>                                                            
+#  █       Use voice file of this name from espeak-ng-data/voices                 
+#  █   -s <integer>                                                               
+#  █       Speed in approximate words per minute. The default is 175              
+#  █   -p <integer>                                                               
+#  █       Pitch adjustment, 0 to 99, default is 50                               
+#  ▼                                                                               
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+
+if need_internet 2>/dev/null; then 
+    need_installed gtts-cli # Check if command is installed
+    [[ ! $EUID -eq 0 ]] && gtts-cli --nocheck --lang "en" "${@:-}" | paplay &>/dev/null &!
+else
+    need_installed espeak-ng # Check if command is installed
+    killall -q espeak-ng || : # Kill old process of speak
+    [[ ! $EUID -eq 0 ]] && LC_ALL=C espeak-ng -v en-us+f5 -s 170 -p 77 -g 9 -a 77 "$@" &>/dev/null &! # Check if not root-user && execute speak-ng for convert string to voice
+    #[[ ! $EUID -eq 0 ]] && nohup espeak-ng -v ja+f5 -s 155 -p 77 -g 10 -a 100 "$@" &>/dev/null &! # Check if not root-user && execute speak-ng for convert string to voice
+fi

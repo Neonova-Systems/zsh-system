@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed curl jq # Check if command is installed
+mkdir -p /tmp/$0 # Create temporary directory for storing data
+
+# To run this command ensure you first run the deeplx docker image:
+# > https://github.com/OwO-Network/DeepLX
+
+local BASE_URL="http://${BASE_URL:-127.0.0.1:1188}/translate" # The base url for acessing deeplx
+echo "{ \"text\": \"${1}\", \"source_lang\": \"${2:-en}\", \"target_lang\": \"${3:-ja}\" }" > "/tmp/$0/payload.json" # Output the payload into temporary directory
+local response=$(curl -s -H "Content-Type: application/json" -X POST -d @/tmp/$0/payload.json "${BASE_URL}") # Get translation from deeplx local API
+[[ "${3:-ja}" == "ja" ]] && { # Check if argument-3 is japanese then:
+    local -a answer=( $(echo $response | jq -r '.data | @sh') $(echo $response | jq -r '.alternatives | @sh') ) # Get the result answer from response
+    local selected_answer=$(( (RANDOM % ${#answer}) + 1 )) # Get random selected answer from answer array
+    echo "${answer[$selected_answer]}" | sed -e "s/[']//g" # Ouput the answer
+    return # Exit
+}
+echo "${response}" | jq -r '.data' # Output the answer

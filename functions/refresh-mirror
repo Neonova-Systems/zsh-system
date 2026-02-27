@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed reflector # Need install this in order to run
+
+ask-password # Ask password
+sudo reflector --latest 50 --country ${1:-us} --fastest 10 --protocol http,https --age 12 --sort rate --save /etc/pacman.d/mirrorlist

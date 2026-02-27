@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed paplay # Check if command is installed
+need_normal_user # Only normal user can run
+
+killall -q paplay || : # Kill the old process, so it will not be overlapping
+paplay "${1:-}" &>/dev/null &!

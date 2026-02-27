@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+hyprctl dispatch resizeactive "exact $(select-region-on-screen '%w %h')" # Resize current window by selecting region on screen

@@ -1,0 +1,49 @@
+#!/usr/bin/env zsh
+# ╭──────────────────────────────────────────────────────────────────────────────╮
+# │     Edit configurations file with this tool,i do not want remember this.     │
+# ╰──────────────────────────────────────────────────────────────────────────────╯
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed seq nvim find # Check if command is installed || exit
+autoload spectre_fzf
+
+# TIPS: use `print -l $array` instead `echo $array | tr " " "\n"`. It much faster than piping into 'tr' command
+local -a file_configurations # Declare local array
+local -A available_options # Declare local associative array
+available_options[hosts]="/etc/hosts"
+available_options[sddm]="/etc/sddm.conf.d"
+available_options[tmux]="/etc/tmux.conf"
+available_options[river]="$XDG_CONFIG_HOME/river"
+available_options[hyprland]="$XDG_CONFIG_HOME/hypr"
+available_options[wofi]="$XDG_CONFIG_HOME/wofi"
+available_options[swaylock]="$XDG_CONFIG_HOME/swaylock"
+available_options[dunst]="$XDG_CONFIG_HOME/dunst"
+available_options[foot]="$XDG_CONFIG_HOME/foot"
+available_options[nwg-bar]="$XDG_CONFIG_HOME/nwg-bar"
+available_options[newsboat]="$XDG_CONFIG_HOME/newsboat"
+available_options[mpd]="$XDG_CONFIG_HOME/mpd"
+available_options[vis]="$XDG_CONFIG_HOME/vis"
+available_options[ncmpcpp]="$XDG_CONFIG_HOME/ncmpcpp"
+available_options[nwg-drawer]="$XDG_CONFIG_HOME/nwg-drawer"
+available_options[git]="/etc/gitconfig"
+available_options[nano]="/etc/nanorc"
+available_options[zathura]="/etc/zathurarc"
+available_options[grub]="/etc/default/grub"
+available_options[alias]="/etc/zsh/alias"
+available_options[sysctl]="/etc/sysctl.d /etc/sysctl.conf"
+available_options[xinit]="/etc/X11/xinit"
+available_options[pacman]="/etc/pacman.conf"
+available_options[vconsole]="/etc/vconsole.conf"
+available_options[lf]="$XDG_CONFIG_HOME/lf"
+available_options[release]="/etc/lsb-release /usr/lib/os-release"
+available_options[zsh]="/etc/zsh"
+available_options[zsh__zshrc]="/etc/zsh/zshrc.d"
+available_options[zsh__zprofile]="/etc/zsh/zprofile.d"
+available_options[neovim]="/etc/xdg/nvim /etc/xdg/nvim/colors /etc/xdg/nvim/lua /etc/xdg/nvim/plugin"
+
+local option="${1:-$(print -l ${(ko)available_options} | spectre_fzf 'Choose an option')}" # Declare local variable if argument-1 empty then pick available_options keys value and sorted with fzf
+play-audio-random /opt/craccken/sound/click 2>/dev/null || : # Play random audio in directory
+[[ -z "${option:-}" ]] && send_return EINVAL # If option variable is empty && exit
+[[ -z "${available_options[$option]:-}" ]] && send_return EINVAL # If available_options(option) empty value -> (not valid) && exit
+file_configurations=( $(find $(print ${available_options[$option]}) -maxdepth 1 -writable -type f 2>/dev/null) ) # Search available_options(option) value type file and store it to array
+file_configurations=( ${file_configurations[@]/*.descriptor-fragment/} ) # Delete file from array if file_configurations has name .rune_stone in it
+[[ -n "${file_configurations[*]}" ]] && $EDITOR "${file_configurations[@]}" # Check if there is file in variable && open up file_configurations with neovim in tab

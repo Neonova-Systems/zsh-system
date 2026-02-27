@@ -1,0 +1,81 @@
+#!/usr/bin/env zsh
+local -a fzf_keybinding=( # Create local array for store fzf keybindings
+    "--bind='ctrl-/:toggle-preview'"    # Toggle preview window
+    "--bind='ctrl-space:toggle'"        # Toggle selection
+    "--bind='ctrl-a:toggle-all'"        # Toggle all selection
+    "--bind='ctrl-f:toggle-search'"     # Toggle search functionality
+)
+local -a fzf_options=( # Create local array for store fzf options
+    # '--exact'                       # Enable exact-match
+    '--algo=v2'                     # Fuzzy matching algorithm, v2 : Optiomal scoring algorithm (quality), v1 : Faster but not guaranteed to find the optimal result (performance)
+    # '--disabled'                    # Do not perform search, only selector.
+    # '--no-sort'                     # Do not sort the result
+    # '--tac'                         # Reverse the order of the input
+    '--multi'                       # Enable multi-select with tab/shift-tab.
+    # '--no-multi'                    # Disable multi-select
+    # '--no-mouse'                    # Disable mouse
+    '--cycle'                       # Enable cyclic scroll
+    # '--keep-right'                  # Keep the right end of the line visible when it's too long. Effective only when the query string is empty.
+    "--scroll-off=7"                # Number of screen lines to keep above or below when scrolling to the top or to the bottom (default: 0).
+    # '--no-hscroll'                  # Disable horizontal scroll
+    '--hscroll-off=10'              # Number of screen columns to keep to the right of the highlighted substring (default: 10). Setting it to a large value will cause the text to be positioned on the center of the screen.
+    # '--filepath-word'               # Make word-wise movements and actions respect path separators.
+    # '--jump-labels='                # Label characters for jump and jump-accept
+    '--height=67%'                  # Display fzf window below the cursor with the given height instead of using the full screen.
+    '--min-height=10'               # Minimum height when --height is given in percent (default: 10). Ignored when --height is not specified.
+    '--layout=reverse'              # Choose the layout (default: default). (reverse : Display from the top of the screen | reverse-list : Display from the top of the screen, prompt at the bottom)
+    '--border=sharp'                # Draw border around the finder ( rounded | sharp | horizontal | vertical | top | bottom | left | right | none )
+    # '--border-label="example"'      # Label to print on the horizontal border line. Should be used with one of the following --border options.
+    # '--border-label-pos=0:top'      # Position of the border label on the border line. Specify a positive integer as the column position from the left. Specify a negative integer to right-align  the  label.
+    # '--no-unicode'                  # Use ASCII characters instead of Unicode box drawing characters to draw border
+    '--margin=1,2,1,2'              # Comma-separated expression for margins around the finder. (T,R,B,L :: Top, right, bottom, left)
+    '--padding=0,1,0,1'             # Comma-separated expression for padding inside the border. Padding is distinguishable from margin only when --border option is used. (T,R,B,L :: Top, right, bottom, left)
+    '--info=inline'                 # Determines the display style of finder info. inline : Display on the same line, hidden : Do not display finder info.
+    '--separator="─"'               # The given string will be repeated to form the horizontal separator on the info line (default: '─' or '-' depending on --no-unicode).
+    "--prompt='󰛡 '"                 # Input prompt (default: '> ')
+    "--pointer=' '"                 # Pointer to the current line (default: '>')
+    "--marker='󰁘 '"                  # Multi-select marker (default: '>')
+    '--header-first'                # Print header before the prompt line.
+    '--ellipsis=…'                  # Ellipsis to show when line is truncated (default: '..')
+    '--ansi'                        # Enable processing of ANSI color codes.
+    '--tabstop=4'                   # Number of spaces for a tab character (default: 8)
+    '--no-bold'                     # Do not use bold text
+    # '--black'                       # Use black background
+    # '--no-clear'                    # Do not clear finder interface on exit.
+    '--select-1'                    # If there is only one match for the initial query, do not start interactive finder and automatically select the only match
+    #'--sync'                       # Synchronous search for multi-staged filtering. If specified, fzf will launch ncurses finder only after the input stream is complete.
+    '--exit-0'                      # IF there is no match for the initial query, do not start interactive finder adn exit immediately.
+    # '--preview-label="example"'     # Label to print on the horizontal border line of the preview window.  Should be used with one of the following --preview-window options.
+    # '--preview-label-pos=0:top'     # Position of the border label on the border line of the preview window. Specify a positive integer as the column position from the left. Specify a  negative  integer  to right-align  the label. Label is printed on the top border line by default, add :bottom to put it on the border line on the bottom. The default value 0 (or center) will put the label at the center of the border line.
+    '--preview-window=right,60%'    # Determines the layout of the preview window. If the argument contains :hidden, the preview window will be hidden by default until 'toggle-preview' action is triggered.
+)
+local -a fzf_style=( # Create local array for store color configuration
+    "--color='fg:#1e2432'"              # Text color
+    "--color='preview-fg:#b3b1ad'"      # Preview window text
+    "--color='bg:#08090d'"              # Background color
+    "--color='preview-bg:#06070a'"      # Preview window background
+    "--color='hl:#ff8f40'"              # Highlighted substrings
+    "--color='fg+:#242b3d:italic'"      # Text (current line)
+    "--color='bg+:#0b0e13'"             # Background (current line)
+    "--color='gutter:#08090d'"          # Gutter on the left (default to bg+)
+    "--color='hl+:#ff8f40:italic'"      # Highlighted substrings (current line)
+    "--color='query:#b3b1ad'"           # Query string
+    "--color='disabled:#0b0e13'"        # Query string when search is disabled
+    "--color='info:#36a3d9:italic'"     # Info line (match counters)
+    "--color='border:#0b0e13'"          # Border arround the window
+    "--color='separator:#0b0e13'"       # Horizontal separator on info line (match counters)
+    "--color='scrollbar:#36a3d9'"       # Scrollbar
+    "--color='label:#36a3d9'"           # Border label (--border-label and --preview-label)
+    "--color='preview-label:#36a3d9'"   # Border label of the preview window (--preview-label)
+    "--color='prompt:#36a3d9'"          # Prompt search
+    "--color='pointer:#2a3247'"         # Pointer to the current line
+    "--color='marker:#36a3d9'"          # Multi-select marker
+    "--color='spinner:#1b202d'"         # Streaming input indicator
+    "--color='header:#36a3d9'"          # Header text
+)
+export FZF_COMPLETION_TRIGGER=';;' # Use ;; as the trigger sequence, default is: **
+export FZF_ALT_C_OPTS="--margin=0 --no-height --border-label='Jump into directory.'" # Set FZF_ALT_C_OPTS to pass additional options .
+export FZF_CTRL_R_OPTS="--margin=0 --no-height --border-label='Search history.' "  # Set FZF_CTRL_R_OPTS to pass additional options.
+export FZF_CTRL_T_OPTS="--margin=0 --no-height --border-label='Pick up some file!' --preview-window=top,50% --preview='bat --theme=TwoDark --style=numbers --color=always {}'" # Set FZF_CTRL_T_OPTS to pass additional options.
+export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'" # Set default command to use when input is tty
+export FZF_DEFAULT_OPTS="${fzf_options[@]} ${fzf_keybinding[@]} ${fzf_style[@]}" # Set default options/parameter fzf, read fzf(1).

@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+alias chmod-000='chmod 000' # Change permission to ---------- (nobody)
+alias chmod-640='chmod 640' # Change permission to -rw-r----- (user: rw, group: r, other: -)
+alias chmod-644='chmod 644' # Change permission to -rw-r--r-- (user: rw, group: r, other: -)
+alias chmod-755='chmod 755' # Change permission to -rwxr-xr-x (user: rwx, group: rx, other: x)
+alias chmod-775='chmod 775' # Change permission to -rwxrwxr-x (user: rwx, group: rwx, other: rx)
+alias chmod-ux='chmod u+x'  # Add permission ---x------ (user: --x, group: -, other: -)

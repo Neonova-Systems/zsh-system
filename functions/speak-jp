@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed paplay curl jq # Check if command is installed || exit
+need_internet
+mkdir -p /tmp/$0 # Create temporary directory for storing data
+
+{
+    # To run this command ensure you first run the voicevox_engine docker image:
+    # > https://hub.docker.com/r/voicevox/voicevox_engine
+    # > https://github.com/VOICEVOX/voicevox_engine
+
+    # Voicevox settings
+    local BASE_URL='http://localhost:50021' # The base url for acessing voicevox_engine
+    local VOICE_ID=13                       # Which speaker(character) to use based on ID like 47, 20, 13, 14, 29, 30
+    local SPEED_SCALE=1.0                   # Default: 1.0
+    local VOLUME_SCALE=1.0                  # Default: 1.0
+    local INTONATION_SCALE=1.0              # Default: 1.0
+    local PRE_PHONEME_LENGTH=0.1            # Default: 0.1
+    local POST_PHONEME_LENGTH=0.1           # Default: 0.1
+    local OUTPUT_STREO=true                 # Default: false
+    local VOICEVOX_WAV_PATH="/tmp/$0/${1:-}.wav" # Path for storing the output of voicevox later
+    [[ ${#1} -gt 100 ]] && VOICEVOX_WAV_PATH=$(mktemp /tmp/$0/XXXXXXXX.wav) # Check if filename exceed the limit length && Path for storing the output of voicevox later
+
+    if [[ ! -f "$VOICEVOX_WAV_PATH" || ! -s "$VOICEVOX_WAV_PATH" ]]; then # Check if wav file not available or file size is zero-byte then:
+        echo "${1:-}" > /tmp/$0/sentence.txt # Create a new file in temporary directory for storing input from argument-1
+        curl -s -X POST "${BASE_URL}/audio_query?speaker=${VOICE_ID}" --get --data-urlencode text@/tmp/$0/sentence.txt \
+            | jq ".speedScale = ${SPEED_SCALE} | .volumeScale = ${VOLUME_SCALE} | .intonationScale = ${INTONATION_SCALE} | .prePhonemeLength = ${PRE_PHONEME_LENGTH} | .postPhonemeLength = ${POST_PHONEME_LENGTH} | .outputStereo = ${OUTPUT_STREO}" > "/tmp/$0/query.json" # Get query from voicevox_engine and store it in temporary directory
+        curl -s -H "Content-Type: application/json" -X POST -d @/tmp/$0/query.json "${BASE_URL}/synthesis?speaker=${VOICE_ID}" > "$VOICEVOX_WAV_PATH" # Input the query into synthesizer voicevox_engine and store the output into the path variable
+        paplay "$VOICEVOX_WAV_PATH" 2>/dev/null # Play the output wav file
+    fi # End if-else statement
+
+    killall -q paplay || : # Clean up old process
+    paplay "$VOICEVOX_WAV_PATH" 2>/dev/null # Play the output wav file
+} || {
+    need_installed gtts-cli # Check if command is installed
+    [[ ! $EUID -eq 0 ]] && gtts-cli --nocheck --lang "ja" "${@:-}" 2>/dev/null | paplay &>/dev/null
+}

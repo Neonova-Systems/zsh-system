@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed ps awk # Check if command is installed || exit
+
+ps -eal | awk '{ if ($2 == "Z") {print $4}}'

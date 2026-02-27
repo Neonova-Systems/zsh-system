@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail errreturn
+need_installed wl-paste vipe wl-copy # Need installed this to run
+
+wl-paste --no-newline | vipe | wl-copy

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+#          ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+#          ┃                           Toggles background shell                           ┃
+#          ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail errreturn
+
+if [[ ${#BUFFER} -eq 0 ]]; then # Check if character contents of the edit buffer is zero (empty line)
+    BUFFER="fg" # The entire contents of the edit buffer.
+    zle accept-line # Finish editing the buffer.
+fi # End if-else statement

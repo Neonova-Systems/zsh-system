@@ -1,0 +1,4 @@
+#!/usr/bin/zsh
+
+# notify-send "Recording Script" "Started" -a 'record-script.sh'
+kill --signal SIGINT wf-recorder || wf-recorder -c libx264rgb -t -f "$XDG_VIDEOS_DIR/recording_$(date '+%Y-%m-%d_%H.%M').mp4" --audio=alsa_output.pci-0000_08_00.6.analog-stereo.monitor

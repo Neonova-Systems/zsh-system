@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+
+if [[ $EUID -eq 0 ]]; then # Check root-user
+    send_return EACCES # Exit with error exit-code
+fi # End if-else statement

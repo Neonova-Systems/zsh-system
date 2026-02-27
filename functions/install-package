@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+
+paru -S --needed "$@" || { echo "\nAttempting to search for package(s): '$@'..."; paru -Ss "$@"; }

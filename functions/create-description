@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed vipe # Check if command is installed
+
+echo "${*:-$(vipe)}" > ./.descriptor-fragment # Create description file

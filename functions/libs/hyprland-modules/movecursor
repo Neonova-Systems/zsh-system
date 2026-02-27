@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed hyprctl jq # Need installed in order to run
+
+local cursor_position="$(hyprctl cursorpos)" # Get current mouse cursor position and store it into variable
+local cursor_position_x=$(echo "$cursor_position" | cut -d ',' -f 1) # Get x position from cursor_position variable
+local cursor_position_y=$(echo "$cursor_position" | cut -d ',' -f 2) # Get y position from cursor_position variable
+
+move() { # Create function for move cursor later
+    readonly SPEED=10 # Create readonly variable for storing the cursor speed movement
+    local iteration; for iteration in $(seq 1 $SPEED); do # Create for-loop with iteration of SPEED
+        cursor_position_x=$((cursor_position_x + ${1})) # Modify the value of cursor_position_x by adding the value with argument-1
+        cursor_position_y=$((cursor_position_y + ${2})) # Modify the value of cursor_position_y by adding the value with argument-2
+        hyprctl dispatch movecursor "$cursor_position_x $cursor_position_y" # Move cursor into the x and y position
+    done # End for-loop statement
+}
+
+local option; while getopts "udlr" option; do # Get option argument -u, -d, -l, -r
+    case ${option} in # Read option variable
+        u) move 0 -1 ;; # Move cursor up
+        d) move 0 1 ;; # Move cursor down
+        l) move -1 0 ;; # Move cursor left
+        r) move 1 0 ;; # Move cursor right
+        \?) error_msg "$0: only takes -udlr" && return 1 ;;
+    esac # End switch-case statement
+done # End while-loop statement

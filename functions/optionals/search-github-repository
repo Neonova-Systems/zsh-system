@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+#          ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+#          ┃               Search github repository and open it on browser                ┃
+#          ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed gh xargs # Check if command is installed
+need_internet # Check if there is available connection
+must_have_argument ${1:-} # Must have argument-1 passed to this function
+
+gh s "${1}" | xargs --max-args=1 -- gh browse --repo

@@ -1,0 +1,52 @@
+#!/usr/bin/env zsh
+#  ██╗   ██╗███████╗███████╗██████╗        █████╗ ██╗     ██╗ █████╗ ███████╗
+#  ██║   ██║██╔════╝██╔════╝██╔══██╗      ██╔══██╗██║     ██║██╔══██╗██╔════╝
+#  ██║   ██║███████╗█████╗  ██████╔╝█████╗███████║██║     ██║███████║███████╗
+#  ██║   ██║╚════██║██╔══╝  ██╔══██╗╚════╝██╔══██║██║     ██║██╔══██║╚════██║
+#  ╚██████╔╝███████║███████╗██║  ██║      ██║  ██║███████╗██║██║  ██║███████║
+#   ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝      ╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝╚══════╝
+# NOTE: THIS FILE CONTAIN ALL USER ALIASES, so add your alias in here
+# NOTE: Do not forget to run zinit-update after editing alias
+#       Use -g flag for define a global alias, -s flag for define a suffix alias.
+ 
+alias l='ls'
+alias lx='ls -X'
+alias la='ls --almost-all'
+alias lt='eza --tree'
+alias ll='ls -l --header'
+alias lla='ls -la --header'
+alias -- -='cd -'
+alias bloated-file='find $PWD -xdev -type f -size +1000M 2>/dev/null'
+alias reload-zsh='source /etc/zsh/zshrc'
+alias rtfm='man'
+alias rtfm-zsh='run-help'
+alias castlee='curl -s http://artscene.textfiles.com/vt100/castle.vt | pv -q -L 9600'
+alias yolo-commit='git commit -m "$(curl -s http://whatthecommit.com/index.txt)"'
+alias mountc='mount | column -t'
+alias fix-broken-terminal='reset'
+alias ascii-table='man ascii'
+alias stopwatch='time ( read )'
+alias daysleft='echo "There are $(($(date +%j -d"Dec 31, $(date +%Y)")-$(date +%j))) days left in year $(date +%Y)."'
+alias llm="find /lib/modules/$(uname -r) -type f -name '*.ko*'" # Outputs List of Loadable Modules (llm) for current kernel
+alias qfind="fd --color=never" # Quickly search for file
+alias filecount="find ./ -type f | cut -d '/' -f 2 | uniq -c | sort --numeric-sort" # Count the number of file recursively
+
+alias -s jpg='swayimg'
+alias -s jpeg='swayimg'
+alias -s png='swayimg'
+alias -s svg='swayimg'
+alias -s mkv='mpv'
+alias -s mp4='mpv'
+alias -s mp3='mpv'
+alias -s txt='nvim'
+alias -s py='python3'
+alias -s log='less +F -MN'
+alias -s html='xdg-open'
+
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g void='/dev/null'
+alias -g leed='| less'
+alias -g logging='| ts'
+alias -g rot13="tr 'A-Za-z' 'N-ZA-Mn-za-m'" # Rotate string 13 times, ex: echo "example" | rot13

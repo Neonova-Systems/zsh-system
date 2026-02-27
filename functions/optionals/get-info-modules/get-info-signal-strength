@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed ip grep cut # Check if command is installed : exit
+
+nmcli -f in-use,signal dev wifi | rg "\*" | awk '{ print $2 }' # Get wifi signal strength

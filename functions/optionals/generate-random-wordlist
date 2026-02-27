@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+
+< /usr/share/dict/${2:-words} | shuf | head -n ${1:-20} || :

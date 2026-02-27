@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset
+
+print -P "\n%F{#00c897}%K{#00241b} ◉ $0 ┆ ${1:-} %F{#00241b}%K{reset}%F{reset}" # Perform prompt expansion (see EXPANSION OF PROMPT SEQUENCES in zshmisc(1)).

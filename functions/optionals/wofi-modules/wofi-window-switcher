@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed hyprctl jq wofi # Check if command is installed
+
+local selected_window=$(hyprctl clients -j | jq -r '.[] | [.workspace.id, .class, .title, .address] | @text' | sed -e 's/["]//g' -e 's/\[//g' -e 's/]//g' -e 's/,/, /g' | wofi --insensitive --show=dmenu | cut -d ',' -f1) # Get all clients or window and select with wofi
+hyprctl dispatch workspace ${selected_window} # Move into selected_window workspace

@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail errreturn
+
+[[ -z "${BUFFER}" ]] && LBUFFER="$(fc -ln -1)" # If buffer empty fill it with last command in history
+case "${BUFFER}" in # Read the prompt-buffer value
+    'sudo '*)
+        replace-prefix-buffer "sudo" "" # Replace sudo to empty
+        ;;
+    *)
+        LBUFFER="sudo $LBUFFER" # Add sudo to beginning buffer
+        ;;
+esac # End switch-case statement
+zle redisplay # Redisplays the edit buffer. (compatibility with zsh-syntax-highlighting)

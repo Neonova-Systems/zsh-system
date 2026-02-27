@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed hyprctl jq # Need install this in order to run
+must_have_argument ${1:-} # Argument need to pass
+must_have_argument ${2:-} # Argument need to pass
+
+# WARNING: Only works with boolean value
+local argument3=${3:+:${3}} # Create local variable, add prefix if argument-3 was set
+[[ $(hyprctl getoption ${1}:${2}${argument3} -j | jq '.int') -eq 0 ]] && hyprctl keyword ${1}:${2}${argument3} true || hyprctl keyword ${1}:${2}${argument3} false
+eww update "${2}${3:+_${3}}-state=$(hyprctl getoption ${1}:${2}${argument3} -j | jq '.int')" 2>/dev/null || :

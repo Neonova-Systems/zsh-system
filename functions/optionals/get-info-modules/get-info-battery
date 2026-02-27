@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed cat # Check if command is installed : exit
+
+local battery # Create local variable
+for battery in /sys/class/power_supply/BAT?; do # Create for-loop with battery as value
+    printf "${battery} Status "; < ${battery}/status # Get info of battery status 
+    printf "${battery} Capacity "; < ${battery}/capacity # Get info of battery capacity
+    printf "${battery} Usage "; echo "$(bc -l <<< "scale=1; $(< ${battery}/voltage_now ) / 1000000") W"
+done # End for-loop statement

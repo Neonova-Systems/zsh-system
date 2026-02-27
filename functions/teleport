@@ -1,0 +1,61 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail errreturn
+autoload spectre_fzf
+
+local -A available_options # Declare local associative array
+available_options[xinit]="/etc/X11/xinit"
+available_options[pacman]="/etc/pacman.d"
+available_options[sddm]="/etc/sddm.conf.d"
+available_options[waybar]="$XDG_CONFIG_HOME/waybar"
+available_options[eww]="$XDG_CONFIG_HOME/eww"
+available_options[ags]="$XDG_CONFIG_HOME/ags"
+available_options[mpv]="$XDG_CONFIG_HOME/mpv"
+available_options[wofi]="$XDG_CONFIG_HOME/wofi"
+available_options[newsboat]="$XDG_CONFIG_HOME/newsboat"
+available_options[foot]="$XDG_CONFIG_HOME/foot"
+available_options[hyprland]="$XDG_CONFIG_HOME/hypr"
+available_options[temporary]="/tmp"
+available_options[udev]="/etc/udev"
+available_options[acpi]="/etc/acpi"
+available_options[temporary]="/tmp"
+available_options[assets]="/opt/craccken/assets"
+
+available_options[home]="$HOME"
+available_options[home__config]="$XDG_CONFIG_HOME"
+available_options[home__pictures]="$HOME/Pictures"
+available_options[home__documents]="$HOME/Documents"
+available_options[home__downloads]="$HOME/Downloads"
+available_options[home__videos]="$HOME/Videos"
+available_options[home__music]="$HOME/Music"
+available_options[home__screenshots]="$HOME/Pictures/Screenshots"
+
+available_options[log]="/var/log"
+available_options[log__nginx]="/var/log/nginx"
+
+available_options[zsh]="/etc/zsh"
+available_options[zsh__zshrc]="/etc/zsh/zshrc.d"
+available_options[zsh__zprofile]="/etc/zsh/zprofile.d"
+available_options[zsh__alias]="/etc/zsh/alias"
+available_options[zsh__trap]="/etc/zsh/functions/trap"
+available_options[zsh__prompt]="/etc/zsh/prompt"
+available_options[zsh__functions]="/etc/zsh/functions"
+available_options[zsh__functions_optionals]="/etc/zsh/functions/optionals"
+available_options[zsh__functions-libs]="/etc/zsh/functions/libs"
+available_options[zsh__functions-hook]="/etc/zsh/functions/hook"
+available_options[zsh__plugin-config]="/etc/zsh/plugin-configs"
+
+available_options[neovim]="/etc/xdg/nvim"
+available_options[neovim__lua]="/etc/xdg/nvim/lua"
+available_options[neovim__colors]="/etc/xdg/nvim/colors"
+available_options[neovim__autocommand]="/etc/xdg/nvim/plugin/autocmmand"
+available_options[neovim__syntax]="/etc/xdg/nvim/syntax"
+available_options[neovim__plugin-config]="/etc/xdg/nvim/after/plugin"
+available_options[neovim__filetype-config]="/etc/xdg/nvim/ftplugin"
+
+local option="${1:-$(print -l ${(ko)available_options} | spectre_fzf 'Choose your destination')}" # Declare local variable if argument-1 empty then pick available_options keys value and sorted with fzf
+[[ -z "${option}" ]] && send_return EINVAL # If option variable is empty && exit
+[[ -z "${available_options[$option]:-}" ]] && send_return EINVAL # If available_options(option) empty value -> (not valid) && exit
+play-audio-random /opt/craccken/sound/click 2>/dev/null || : # Play random audio in directory
+blink-led &! # Call function to blink-led effect
+speak "Moving, into ${option} directory." || : # Call function from /etc/zsh/functions to translate text to speak
+cd "${available_options[${option}]}" 2>/dev/null # Moving into destination

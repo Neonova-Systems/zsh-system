@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+
+local command # Create local variable
+for command in $@; do # Create for-loop with list of command from passed argument
+    (( $+commands[$command] )) || { # Check if command available if not then run this below
+        warn_msg " ${command} not installed" # Call function from /etc/zsh/functions/lib 
+        return 1337 # Send return error-code  
+    }
+done # End for-loop statement
