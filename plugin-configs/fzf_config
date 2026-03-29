@@ -49,30 +49,30 @@ local -a fzf_options=( # Create local array for store fzf options
     # '--preview-label-pos=0:top'     # Position of the border label on the border line of the preview window. Specify a positive integer as the column position from the left. Specify a  negative  integer  to right-align  the label. Label is printed on the top border line by default, add :bottom to put it on the border line on the bottom. The default value 0 (or center) will put the label at the center of the border line.
     '--preview-window=right,60%'    # Determines the layout of the preview window. If the argument contains :hidden, the preview window will be hidden by default until 'toggle-preview' action is triggered.
 )
-local -a fzf_style=( # Create local array for store color configuration
-    "--color='fg:#1e2432'"              # Text color
-    "--color='preview-fg:#b3b1ad'"      # Preview window text
-    "--color='bg:#08090d'"              # Background color
-    "--color='preview-bg:#06070a'"      # Preview window background
-    "--color='hl:#ff8f40'"              # Highlighted substrings
-    "--color='fg+:#242b3d:italic'"      # Text (current line)
-    "--color='bg+:#0b0e13'"             # Background (current line)
-    "--color='gutter:#08090d'"          # Gutter on the left (default to bg+)
-    "--color='hl+:#ff8f40:italic'"      # Highlighted substrings (current line)
-    "--color='query:#b3b1ad'"           # Query string
-    "--color='disabled:#0b0e13'"        # Query string when search is disabled
-    "--color='info:#36a3d9:italic'"     # Info line (match counters)
-    "--color='border:#0b0e13'"          # Border arround the window
-    "--color='separator:#0b0e13'"       # Horizontal separator on info line (match counters)
-    "--color='scrollbar:#36a3d9'"       # Scrollbar
-    "--color='label:#36a3d9'"           # Border label (--border-label and --preview-label)
-    "--color='preview-label:#36a3d9'"   # Border label of the preview window (--preview-label)
-    "--color='prompt:#36a3d9'"          # Prompt search
-    "--color='pointer:#2a3247'"         # Pointer to the current line
-    "--color='marker:#36a3d9'"          # Multi-select marker
-    "--color='spinner:#1b202d'"         # Streaming input indicator
-    "--color='header:#36a3d9'"          # Header text
-)
+# local -a fzf_style=( # Create local array for store color configuration
+#     "--color='fg:#1e2432'"              # Text color
+#     "--color='preview-fg:#b3b1ad'"      # Preview window text
+#     "--color='bg:#08090d'"              # Background color
+#     "--color='preview-bg:#06070a'"      # Preview window background
+#     "--color='hl:#ff8f40'"              # Highlighted substrings
+#     "--color='fg+:#242b3d:italic'"      # Text (current line)
+#     "--color='bg+:#0b0e13'"             # Background (current line)
+#     "--color='gutter:#08090d'"          # Gutter on the left (default to bg+)
+#     "--color='hl+:#ff8f40:italic'"      # Highlighted substrings (current line)
+#     "--color='query:#b3b1ad'"           # Query string
+#     "--color='disabled:#0b0e13'"        # Query string when search is disabled
+#     "--color='info:#36a3d9:italic'"     # Info line (match counters)
+#     "--color='border:#0b0e13'"          # Border arround the window
+#     "--color='separator:#0b0e13'"       # Horizontal separator on info line (match counters)
+#     "--color='scrollbar:#36a3d9'"       # Scrollbar
+#     "--color='label:#36a3d9'"           # Border label (--border-label and --preview-label)
+#     "--color='preview-label:#36a3d9'"   # Border label of the preview window (--preview-label)
+#     "--color='prompt:#36a3d9'"          # Prompt search
+#     "--color='pointer:#2a3247'"         # Pointer to the current line
+#     "--color='marker:#36a3d9'"          # Multi-select marker
+#     "--color='spinner:#1b202d'"         # Streaming input indicator
+#     "--color='header:#36a3d9'"          # Header text
+# )
 export FZF_COMPLETION_TRIGGER=';;' # Use ;; as the trigger sequence, default is: **
 export FZF_ALT_C_OPTS="--margin=0 --no-height --border-label='Jump into directory.'" # Set FZF_ALT_C_OPTS to pass additional options .
 export FZF_CTRL_R_OPTS="--margin=0 --no-height --border-label='Search history.' "  # Set FZF_CTRL_R_OPTS to pass additional options.
