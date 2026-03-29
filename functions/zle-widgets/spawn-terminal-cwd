@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail errreturn
+need_installed foot # Check if command is installed
+
+foot -D "${PWD}" >/dev/null 2>&1 &! # Spawn new foot terminal in current working directory
+zle redisplay # Redisplay prompt after launching the terminal

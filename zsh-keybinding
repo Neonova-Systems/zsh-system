@@ -10,7 +10,7 @@
 # ╭──────────────────────────────────────────────────────────────────────────────╮
 # │                            Load functions to zsh                             │
 # ╰──────────────────────────────────────────────────────────────────────────────╯
-autoload fancy-ctrl-z edit-clipboard edit-command-line zle-keymap-select zle-line-init want-to-look-busy select-quoted select-bracketed fast-sudo lfcd yazicd fzf-last-output
+autoload fancy-ctrl-z edit-clipboard edit-command-line zle-keymap-select zle-line-init want-to-look-busy select-quoted select-bracketed fast-sudo lfcd yazicd spawn-terminal-cwd fzf-last-output
 # ╭──────────────────────────────────────────────────────────────────────────────╮
 # │       Add functions to zsh-line-edit widget so we can bind it to a key       │
 # ╰──────────────────────────────────────────────────────────────────────────────╯
@@ -24,6 +24,7 @@ zle -N edit-configuration
 zle -N select-bracketed
 zle -N fast-sudo
 zle -N yazicd
+zle -N spawn-terminal-cwd
 zle -N fzf-last-output
 # ╭──────────────────────────────────────────────────────────────────────────────╮
 # │                               Special widgets                                │
@@ -52,6 +53,7 @@ bindkey -M main '^[s' fast-sudo         # Set keybinding for call fast-sudo func
 bindkey -M main '^e^r' edit-configuration # Set keybinding for call teleport functions: CTRL + e + CTRL + r
 bindkey -M main '^x^f' want-to-look-busy # Set keybinding for call i-want-to-look-busy: CTRL + x CTRL + c
 bindkey -M main '^x^o' fzf-last-output  # Set keybinding for call fzf-last-output: CTRL + x + CTRL + o
+bindkey -M main '^x^t' spawn-terminal-cwd # Set keybinding for open foot in current directory: CTRL + x + CTRL + t
 bindkey -s '^o' '^uyazicd\n'              # Set keybinding for call yazicd: CTRL + o
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                                     CORE                                     ┃
