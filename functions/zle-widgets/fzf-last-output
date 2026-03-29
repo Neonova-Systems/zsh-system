@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail errreturn
+(( $+commands[fzf] )) || { zle -M 'fzf is not installed'; return 0; }
+
+local output_source=""
+if [[ -n "${TMUX:-}" ]] && (( $+commands[tmux] )); then
+    # Prefer tmux scrollback so we can use real previous terminal output.
+    output_source="$(tmux capture-pane -p -S -2000 -J 2>/dev/null)"
+else
+    # Fallback: rerun the last command and use its output as selector input.
+    local last_command="$(fc -ln -1 2>/dev/null)"
+    [[ -z "${last_command}" ]] && { zle -M 'No previous command available'; return 0; }
+    output_source="$(eval "${last_command}" 2>&1)"
+fi
+
+[[ -z "${output_source//[[:space:]]/}" ]] && { zle -M 'No output to select from'; return 0; }
+
+local selected_line="$(print -r -- "${output_source}" | sed $'s/\r$//' | fzf --no-multi --border-label='Pick from previous output')"
+[[ -z "${selected_line}" ]] && { zle redisplay; return 0; }
+
+LBUFFER+="${selected_line}"
+zle redisplay
