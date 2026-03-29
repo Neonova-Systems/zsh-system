@@ -24,7 +24,7 @@ paru -S --needed "$@" || {
 		${(f)$(
 			print -r -- "${search_output}" \
 				| awk '/^[^[:space:]]+\/[^[:space:]]+[[:space:]]/{print $1}' \
-				| fzf --multi --height=100% --no-sort --border-label='Select package(s)'
+				| fzf --multi --border-label='Select package(s)'
 		)}
 	)
 	(( ${#selected_package[@]} == 0 )) && return 0
