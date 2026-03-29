@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
-need_installed dragon-drop # Check if command is installed || exit
-autoload spectre_fzf
-
-local -a target_file=( ${@:-$(spectre_fzf 'Pick a file to drag')} ) # Create local variable if argument-1 empty then pick a file with fzf
-play-audio-random /opt/craccken/sound/click || : # Play random audio in directory
-dragon-drop --on-top ${target_file}
