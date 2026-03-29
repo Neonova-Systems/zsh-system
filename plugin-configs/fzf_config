@@ -74,7 +74,9 @@ local -a fzf_options=( # Create local array for store fzf options
 #     "--color='header:#36a3d9'"          # Header text
 # )
 
-local -a fzf_style=()
+local -a fzf_style=(
+    '--style=minimal'
+)
 
 export FZF_COMPLETION_TRIGGER=';;' # Use ;; as the trigger sequence, default is: **
 export FZF_ALT_C_OPTS="--margin=0 --no-height --border-label='Jump into directory.'" # Set FZF_ALT_C_OPTS to pass additional options .
