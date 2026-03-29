@@ -66,6 +66,9 @@ bindkey -M main '^[[F' end-of-line          # move cursor to end-of-line: END
 bindkey -M main '^[[H' beginning-of-line    # move cursor to beginning-of-line: HOME
 bindkey -M main '^[[Z' undo                 # undo last action: shift + tab
 bindkey "^?" backward-delete-char           # fix the backspace key stops working.
+bindkey -M main "^H" backward-kill-word             # delete one word backward: CTRL + backspace (common)
+bindkey -M main "^[^?" backward-kill-word           # delete one word backward: CTRL + backspace (some terminals)
+bindkey -M main "^[[127;5u" backward-kill-word      # delete one word backward: CTRL + backspace (CSI-u terminals)
 bindkey -M viins "^H" backward-kill-word            # delete one word backward: CTRL + backspace (common)
 bindkey -M viins "^[^?" backward-kill-word          # delete one word backward: CTRL + backspace (some terminals)
 bindkey -M viins "^[[127;5u" backward-kill-word  	# delete one word backward: CTRL + backspace (CSI-u terminals)
