@@ -66,16 +66,20 @@ bindkey -M vicmd '^M' forward-char          # move forward one character in vi n
 bindkey -M main '^L' clear-screen           # clean terminal screen: CTRL + l
 bindkey -M main '^[[F' end-of-line          # move cursor to end-of-line: END
 bindkey -M main '^[[H' beginning-of-line    # move cursor to beginning-of-line: HOME
+bindkey -M main '^[[4~' end-of-line         # move cursor to end-of-line: END (xterm variant)
+bindkey -M main '^[[1~' beginning-of-line   # move cursor to beginning-of-line: HOME (xterm variant)
+bindkey -M main '^[OF' end-of-line          # move cursor to end-of-line: END (SS3 variant)
+bindkey -M main '^[OH' beginning-of-line    # move cursor to beginning-of-line: HOME (SS3 variant)
 bindkey -M main '^[[Z' undo                 # undo last action: shift + tab
 bindkey "^?" backward-delete-char           # fix the backspace key stops working.
 bindkey -M main "^H" backward-kill-word             # delete one word backward: CTRL + backspace (common)
-bindkey -M main "^[^?" backward-kill-word           # delete one word backward: CTRL + backspace (some terminals)
+bindkey -M main "^[^?" backward-kill-word           # delete one word backward: CTRL + backspace 
 bindkey -M main "^[[127;5u" backward-kill-word      # delete one word backward: CTRL + backspace (CSI-u terminals)
-bindkey -M main "^[[27;5;13~" backward-kill-word    # delete one word backward: CTRL + backspace (your terminal)
+bindkey -M main "^[[27;5;13~" backward-kill-word    # delete one word backward: CTRL + backspace (foot terminal)
 bindkey -M viins "^H" backward-kill-word            # delete one word backward: CTRL + backspace (common)
-bindkey -M viins "^[^?" backward-kill-word          # delete one word backward: CTRL + backspace (some terminals)
+bindkey -M viins "^[^?" backward-kill-word          # delete one word backward: CTRL + backspace 
 bindkey -M viins "^[[127;5u" backward-kill-word  	# delete one word backward: CTRL + backspace (CSI-u terminals)
-bindkey -M viins "^[[27;5;13~" backward-kill-word   # delete one word backward: CTRL + backspace (your terminal)
+bindkey -M viins "^[[27;5;13~" backward-kill-word   # delete one word backward: CTRL + backspace (foot terminal)
 for mode in visual viopp; do # Create for loop with mode as value
 	for key in {a,i}{\',\",\`}; do # Create for loop with key as value
 		bindkey -M "${mode}" "${key}" select-quoted # Set keybinding for being able to ci", ci', ci`, di", etc like in vim
