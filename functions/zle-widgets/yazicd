@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail errreturn
+need_installed yazi # Check if command is installed
+
+local cwd_file="$(mktemp)" # Create temporary file to store yazi last dir
+yazi --cwd-file="$cwd_file" "$@" # Store the last dir of yazi on exit to cwd_file
+[[ -s "$cwd_file" ]] && cd -- "$(<"$cwd_file")" # Move into the stored last dir
+rm -f -- "$cwd_file" # Cleanup temporary file
