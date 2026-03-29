@@ -1,4 +1,33 @@
 #!/usr/bin/env zsh
 emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
 
-paru -S --needed "$@" || { echo "\nAttempting to search for package(s): '$@'..."; paru -Ss "$@"; }
+need_installed fzf
+
+paru -S --needed "$@" || {
+	local query="$*"
+	echo "\nAttempting to search for package(s): '${query}'..."
+
+	local search_output
+	search_output="$(paru -Ss "$query" 2>/dev/null || true)"
+	[[ -z "${search_output}" ]] && { echo "No package results found."; return 1; }
+
+	print -r -- "${search_output}"
+	if [[ -o interactive ]]; then
+		local want_install='y'
+		read -r "want_install?Want to Install from the list? (Y/n) "
+		[[ -z "${want_install}" ]] && want_install='y'
+		[[ "${want_install}" == [nN] ]] && return 0
+	fi
+
+	local -a selected_package
+	selected_package=(
+		${(f)$(
+			print -r -- "${search_output}" \
+				| awk '/^[^[:space:]]+\/[^[:space:]]+[[:space:]]/{print $1}' \
+				| fzf --multi --height=100% --no-sort --border-label='Select package(s)'
+		)}
+	)
+	(( ${#selected_package[@]} == 0 )) && return 0
+
+	print -z -- "install-package ${(j: :)selected_package}"
+}
