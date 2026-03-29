@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
+need_installed pacman xdg-open awk # Check if command is installed
+must_have_argument ${1:-} # Must have argument-1 passed || exit
+
+local package_name="${1}"
+local info_package
+info_package="$(/usr/bin/pacman -Si "${package_name}")" || return 1 # Get package info first
+print -r -- "${info_package}" # Show pacman -Si output
+
+[[ ! -o interactive ]] && return 0
+
+local open_web='y'
+read -r "open_web?Want to open package info on web? (Y/n) "
+[[ -z "${open_web}" ]] && open_web='y'
+[[ "${open_web}" == [nN] ]] && return 0
+
+local architecture repository
+architecture="$(awk -F ':' '/^Arch[[:space:]]*:/ { gsub(/[[:space:]]/, "", $2); print $2; exit }' <<< "${info_package}")"
+repository="$(awk -F ':' '/^Repo[[:space:]]*:/ { gsub(/[[:space:]]/, "", $2); print $2; exit }' <<< "${info_package}")"
+
+[[ -z "${architecture}" || -z "${repository}" ]] && return 0
+xdg-open "https://www.archlinux.org/packages/${repository}/${architecture}/${package_name}/" &>/dev/null
