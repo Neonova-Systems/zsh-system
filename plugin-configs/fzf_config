@@ -24,14 +24,14 @@ local -a fzf_options=( # Create local array for store fzf options
     '--height=67%'                  # Display fzf window below the cursor with the given height instead of using the full screen.
     '--min-height=10'               # Minimum height when --height is given in percent (default: 10). Ignored when --height is not specified.
     '--layout=reverse'              # Choose the layout (default: default). (reverse : Display from the top of the screen | reverse-list : Display from the top of the screen, prompt at the bottom)
-    '--border=sharp'                # Draw border around the finder ( rounded | sharp | horizontal | vertical | top | bottom | left | right | none )
+    # '--border=sharp'                # Draw border around the finder ( rounded | sharp | horizontal | vertical | top | bottom | left | right | none )
     # '--border-label="example"'      # Label to print on the horizontal border line. Should be used with one of the following --border options.
     # '--border-label-pos=0:top'      # Position of the border label on the border line. Specify a positive integer as the column position from the left. Specify a negative integer to right-align  the  label.
     # '--no-unicode'                  # Use ASCII characters instead of Unicode box drawing characters to draw border
     '--margin=1,2,1,2'              # Comma-separated expression for margins around the finder. (T,R,B,L :: Top, right, bottom, left)
     '--padding=0,1,0,1'             # Comma-separated expression for padding inside the border. Padding is distinguishable from margin only when --border option is used. (T,R,B,L :: Top, right, bottom, left)
     '--info=inline'                 # Determines the display style of finder info. inline : Display on the same line, hidden : Do not display finder info.
-    '--separator="─"'               # The given string will be repeated to form the horizontal separator on the info line (default: '─' or '-' depending on --no-unicode).
+    # '--separator="─"'               # The given string will be repeated to form the horizontal separator on the info line (default: '─' or '-' depending on --no-unicode).
     # "--prompt='󰛡 '"                 # Input prompt (default: '> ')
     # "--pointer=' '"                 # Pointer to the current line (default: '>')
     # "--marker='󰁘 '"                  # Multi-select marker (default: '>')
@@ -39,7 +39,7 @@ local -a fzf_options=( # Create local array for store fzf options
     '--ellipsis=…'                  # Ellipsis to show when line is truncated (default: '..')
     '--ansi'                        # Enable processing of ANSI color codes.
     '--tabstop=4'                   # Number of spaces for a tab character (default: 8)
-    '--no-bold'                     # Do not use bold text
+    # '--no-bold'                     # Do not use bold text
     # '--black'                       # Use black background
     # '--no-clear'                    # Do not clear finder interface on exit.
     '--select-1'                    # If there is only one match for the initial query, do not start interactive finder and automatically select the only match
