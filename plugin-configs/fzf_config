@@ -14,7 +14,7 @@ local -a fzf_options=( # Create local array for store fzf options
     '--multi'                       # Enable multi-select with tab/shift-tab.
     # '--no-multi'                    # Disable multi-select
     # '--no-mouse'                    # Disable mouse
-    '--cycle'                       # Enable cyclic scroll
+    # '--cycle'                       # Enable cyclic scroll
     # '--keep-right'                  # Keep the right end of the line visible when it's too long. Effective only when the query string is empty.
     "--scroll-off=7"                # Number of screen lines to keep above or below when scrolling to the top or to the bottom (default: 0).
     # '--no-hscroll'                  # Disable horizontal scroll
@@ -32,9 +32,9 @@ local -a fzf_options=( # Create local array for store fzf options
     '--padding=0,1,0,1'             # Comma-separated expression for padding inside the border. Padding is distinguishable from margin only when --border option is used. (T,R,B,L :: Top, right, bottom, left)
     '--info=inline'                 # Determines the display style of finder info. inline : Display on the same line, hidden : Do not display finder info.
     '--separator="─"'               # The given string will be repeated to form the horizontal separator on the info line (default: '─' or '-' depending on --no-unicode).
-    "--prompt='󰛡 '"                 # Input prompt (default: '> ')
-    "--pointer=' '"                 # Pointer to the current line (default: '>')
-    "--marker='󰁘 '"                  # Multi-select marker (default: '>')
+    # "--prompt='󰛡 '"                 # Input prompt (default: '> ')
+    # "--pointer=' '"                 # Pointer to the current line (default: '>')
+    # "--marker='󰁘 '"                  # Multi-select marker (default: '>')
     '--header-first'                # Print header before the prompt line.
     '--ellipsis=…'                  # Ellipsis to show when line is truncated (default: '..')
     '--ansi'                        # Enable processing of ANSI color codes.
@@ -73,6 +73,9 @@ local -a fzf_options=( # Create local array for store fzf options
 #     "--color='spinner:#1b202d'"         # Streaming input indicator
 #     "--color='header:#36a3d9'"          # Header text
 # )
+
+local -a fzf_style=()
+
 export FZF_COMPLETION_TRIGGER=';;' # Use ;; as the trigger sequence, default is: **
 export FZF_ALT_C_OPTS="--margin=0 --no-height --border-label='Jump into directory.'" # Set FZF_ALT_C_OPTS to pass additional options .
 export FZF_CTRL_R_OPTS="--margin=0 --no-height --border-label='Search history.' "  # Set FZF_CTRL_R_OPTS to pass additional options.
