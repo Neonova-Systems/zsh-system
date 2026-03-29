@@ -66,9 +66,9 @@ bindkey -M main '^[[F' end-of-line          # move cursor to end-of-line: END
 bindkey -M main '^[[H' beginning-of-line    # move cursor to beginning-of-line: HOME
 bindkey -M main '^[[Z' undo                 # undo last action: shift + tab
 bindkey "^?" backward-delete-char           # fix the backspace key stops working.
-bindkey "^H" backward-kill-word             # delete one word backward: CTRL + backspace (common)
-bindkey "^[^?" backward-kill-word           # delete one word backward: CTRL + backspace (some terminals)
-bindkey "^[[127;5u" backward-kill-word      # delete one word backward: CTRL + backspace (CSI-u terminals)
+bindkey -M viins "^H" backward-kill-word            # delete one word backward: CTRL + backspace (common)
+bindkey -M viins "^[^?" backward-kill-word          # delete one word backward: CTRL + backspace (some terminals)
+bindkey -M viins "^[[127;5u" backward-kill-word  	# delete one word backward: CTRL + backspace (CSI-u terminals)
 for mode in visual viopp; do # Create for loop with mode as value
 	for key in {a,i}{\',\",\`}; do # Create for loop with key as value
 		bindkey -M "${mode}" "${key}" select-quoted # Set keybinding for being able to ci", ci', ci`, di", etc like in vim
