@@ -57,6 +57,8 @@ bindkey -s '^o' '^ulfcd\n'              # Set keybinding for call lfcd: CTRL + o
 # ┃                                     CORE                                     ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 bindkey -M main '^ ' autosuggest-accept     # accepts the current suggestion: CTRL + SPACE
+bindkey -M viins '^ ' expand-or-complete    # trigger completion/fzf-tab in insert mode: CTRL + SPACE
+bindkey -M viins '^@' expand-or-complete    # trigger completion/fzf-tab in insert mode: CTRL + SPACE (NUL variant)
 bindkey -M viins '^[c' fzf-cd-widget        # cd into the selected directory: ALT + c
 bindkey -M viins '^[t' fzf-file-widget      # paste the selected file path into the command line: ALT + t
 bindkey -M viins '^[r' fzf-history-widget   # paste the selected command from history into command line: ALT + r
