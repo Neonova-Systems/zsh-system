@@ -1,5 +1,18 @@
 #!/usr/bin/env zsh
 emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
-need_installed ps awk # Check if command is installed || exit
+need_installed ps awk yad # Check if command is installed || exit
 
-ps -eal | awk '{ if ($2 == "Z") {print $4}}'
+local zombie_rows="$(ps -eo pid=,ppid=,stat=,comm= | awk '$3 ~ /Z/ {print $1"\t"$2"\t"$4}')"
+
+[[ -z "${zombie_rows}" ]] && {
+	yad --fixed --title "Zombie Processes" --buttons-layout=center --button="OK:0" --text "No zombie processes found."
+	return 0
+}
+
+print -r -- "${zombie_rows}" | yad --list \
+	--title="Zombie Processes" \
+	--width=640 \
+	--height=360 \
+	--column="PID" \
+	--column="PPID" \
+	--column="CMD"
