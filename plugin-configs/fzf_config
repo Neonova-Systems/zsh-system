@@ -37,7 +37,7 @@ local -a fzf_options=( # Create local array for store fzf options
     # "--marker='󰁘 '"                  # Multi-select marker (default: '>')
     '--header-first'                # Print header before the prompt line.
     '--ellipsis=…'                  # Ellipsis to show when line is truncated (default: '..')
-    '--ansi'                        # Enable processing of ANSI color codes.
+    # '--ansi'                        # Enable processing of ANSI color codes.
     '--tabstop=4'                   # Number of spaces for a tab character (default: 8)
     # '--no-bold'                     # Do not use bold text
     # '--black'                       # Use black background
