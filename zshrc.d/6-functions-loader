@@ -20,7 +20,6 @@ autoload precmd # Load a hook function that executed before each prompt.
 #          ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 #          ┃                                Trap functions                                ┃
 #          ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-autoload TRAPWINCH # Load a trap function that executed when terminal resized
 TRAPINT(){ # Define a trap function that executed when CTRL_C was pressed.
     echo "" # Print string
     return 128+$1

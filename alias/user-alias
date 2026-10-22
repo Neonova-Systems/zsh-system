@@ -13,8 +13,13 @@ alias l='ls'
 alias lx='ls -X'
 alias la='ls --almost-all'
 alias lt='eza --tree'
-alias ll='ls -l --header'
-alias lla='ls -la --header'
+if (( $+commands[lsd] )) || (( $+commands[eza] )); then # GNU ls rejects --header, only lsd/eza accept it
+    alias ll='ls -l --header'
+    alias lla='ls -la --header'
+else
+    alias ll='ls -lh'
+    alias lla='ls -lah'
+fi
 alias -- -='cd -'
 alias bloated-file='find $PWD -xdev -type f -size +1000M 2>/dev/null'
 alias reload-zsh='source /etc/zsh/zshrc'

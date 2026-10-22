@@ -7,9 +7,16 @@ if [[ -n "${TMUX:-}" ]] && (( $+commands[tmux] )); then
     # Prefer tmux scrollback so we can use real previous terminal output.
     output_source="$(tmux capture-pane -p -S -2000 -J 2>/dev/null)"
 else
-    # Fallback: rerun the last command and use its output as selector input.
+    # Fallback: rerun the last command, but only after an explicit confirmation.
     local last_command="$(fc -ln -1 2>/dev/null)"
     [[ -z "${last_command}" ]] && { zle -M 'No previous command available'; return 0; }
+    local reply
+    if ! read -q "reply?Re-run last command to capture its output? [y/N] "; then # Confirm before re-executing a possibly destructive command
+        print
+        zle -M 'Cancelled: last command was not re-run'
+        return 0
+    fi
+    print
     output_source="$(eval "${last_command}" 2>&1)"
 fi
 

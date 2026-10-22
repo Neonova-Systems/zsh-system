@@ -22,6 +22,6 @@ export MANPAGER="nvim +Man!"                                                    
 # export MANWIDTH=999                                                             # If $MANWIDTH is set, its value is used as the line length for which manual pages should be formatted.
 # export SSH_ASKPASS="/usr/lib/ssh/ssh-askpass"                                   # Set default askpass program for ssh
 # export SUDO_ASKPASS="/usr/lib/ssh/x11-ssh-askpass"                              # Set default askpass program for sudo with -A flag
-export TERMINAL_WIDTH="$(tput cols)"                                            # Store terminal width size
+[[ -t 1 ]] && export TERMINAL_WIDTH="$(tput cols 2>/dev/null)"                  # Store terminal width size (only when stdout is a tty; tput errors when $TERM is unset)
 export FPATH="$FPATH:${$(find $XDG_CONFIG_HOME/zsh/functions -type d -printf %p: 2>/dev/null)%%:}:${$(find /etc/zsh/functions -type d,l -printf %p:)%%:}"    # Add additional functions autoload path
 export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.local/share/cargo/bin:$HOME/.bin:$GOPATH/bin:$HOME/.local/share/npm/bin:$PNPM_HOME" # Add additional executable path

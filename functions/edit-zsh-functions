@@ -1,6 +1,11 @@
 #!/usr/bin/env zsh
 emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset errreturn
 need_installed find # Check if command is installed
+must_have_argument ${1:-} # Must have argument-1 passed || exit
+
+local matched_functions # Create local variable
+matched_functions="$(find "/etc/zsh/functions" -iname "*${1}*" -type f 2>/dev/null)" # Find functions file in /etc/zsh/functions directory
+[[ -z "${matched_functions}" ]] && { warn_msg "No function matching '${1}'"; return 1; } # No match || exit with error
 
 ask-password # Ask password
-sudo ${EDITOR:-/usr/bin/nvim} $(find "/etc/zsh/functions" -iname "*${1:-}*" -type f 2>/dev/null) # Find functions file in /etc/zsh/functions directory and edit it with your editor
+sudo ${EDITOR:-/usr/bin/nvim} ${(f)matched_functions} # Edit matched function(s) with your editor
