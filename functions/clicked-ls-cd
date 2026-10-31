@@ -14,6 +14,7 @@ local decoded=${encoded//\%/\\x} # Turn every % into \x so printf %b can decode 
 printf -v decoded '%b' "$decoded" # Percent-decode the path into decoded
 
 if [[ -d $decoded ]]; then # Check if the decoded path is a directory
+    unsetopt nounset # chpwd hooks (e.g. zinit-scheduler) read unset vars; keep nounset off while the cd fires them
     builtin cd -- "$decoded" # Change to it using the builtin cd
 else
     print -u2 "clicked-ls-cd: not a directory: $decoded" # Report the failure
