@@ -1,7 +1,11 @@
 #!/usr/bin/env zsh
 emulate -L zsh; setopt extendedglob warncreateglobal pipefail nounset
 
-(la) 2>/dev/null # Same like `la`
+if [[ $EUID -ne 0 && -n ${KITTY_WINDOW_ID:-} && -x /home/xaxeric/Workspace/stellariscore-bin/clicked-ls ]]; then # Only non-root kitty gets the clickable listing
+    clicked-ls # Print clickable directory listing (directories cd on click)
+else
+    (la) 2>/dev/null # Same like `la`
+fi # End if-else statement
 [[ -r ./.descriptor-fragment ]] && print -P "\n%F{#00c897}%K{#00241b}  $(<./.descriptor-fragment 2>/dev/null) %F{#00241b}%K{reset}%F{reset}" # Check if .descriptor-fragment is readable file && read .descriptor-fragment file
 [[ -d ./.git ]] && update-prompt # Update prompt if there is .git directory in current path
 
